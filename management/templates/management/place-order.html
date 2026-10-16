@@ -1,0 +1,53 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Your Order</title>
+</head>
+<body>
+    <h1>Place Your Order 🍽️</h1>
+
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+
+    {% if menu_items %}
+        <form method="post">
+            {% csrf_token %}
+
+            <label for="menu_item">Choose food:</label>
+            <select name="menu_item" id="menu_item" required>
+                {% for item in menu_items %}
+                    <option value="{{ item.id }}">
+                        {{ item.name }} - ₹{{ item.price }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <br><br>
+
+            <label for="quantity">Quantity:</label>
+            <input
+                type="number"
+                name="quantity"
+                id="quantity"
+                min="1"
+                max="100"
+                value="1"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">Place Order</button>
+        </form>
+    {% else %}
+        <p>No available menu items. Add items through Django Admin.</p>
+    {% endif %}
+
+    <p><a href="/">Back to menu</a></p>
+</body>
+</html>
+```

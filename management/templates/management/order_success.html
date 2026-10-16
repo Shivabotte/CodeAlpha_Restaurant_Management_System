@@ -1,0 +1,102 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Successful</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fffaf4;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px #ddd;
+            text-align: center;
+        }
+
+        h1 {
+            color: #258044;
+        }
+
+        .order-details {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .total {
+            font-size: 22px;
+            font-weight: bold;
+            color: #258044;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 22px;
+            background: #702b20;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .btn:hover {
+            background: #501d16;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎉 Order Placed Successfully!</h1>
+        <p>Thank you for ordering from our restaurant.</p>
+
+        <div class="order-details">
+            <h2>Order Details</h2>
+
+            <p>
+                <strong>Order ID:</strong>
+                {{ order.id }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ order.get_status_display }}
+            </p>
+
+            <h3>Items</h3>
+
+            {% for item in order.items.all %}
+                <p>
+                    {{ item.menu_item.name }} × {{ item.quantity }}
+                    — ₹{{ item.unit_price }}
+                </p>
+            {% empty %}
+                <p>No items found for this order.</p>
+            {% endfor %}
+
+            <p class="total">
+                Total: ₹{{ order.total_amount }}
+            </p>
+        </div>
+
+        <a href="/" class="btn">Back to Menu</a>
+        <a href="{% url 'place_order' %}" class="btn">Order Again</a>
+    </div>
+</body>
+</html>
+```

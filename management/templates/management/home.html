@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shiva's Restaurant</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fffaf4;
+            color: #292929;
+        }
+
+        header {
+            background: #702b20;
+            color: white;
+            text-align: center;
+            padding: 28px 15px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 10px 0;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            background: #258044;
+            padding: 10px 16px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        header a:hover {
+            background: #1c6334;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .menu {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
+        }
+
+        .item {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #00000012;
+        }
+
+        .item h3 {
+            color: #702b20;
+            margin-top: 0;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #258044;
+        }
+
+        .availability {
+            color: #258044;
+        }
+
+        .unavailable {
+            color: #bd3328;
+        }
+
+        .empty {
+            text-align: center;
+            grid-column: 1 / -1;
+        }
+
+        button {
+            background: #702b20;
+            color: white;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #502017;
+        }
+
+        .place-order {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .place-order a {
+            color: #702b20;
+        }
+
+        footer {
+            background: #292929;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🍽️ Shiva's Restaurant</h1>
+        <p>Delicious food, memorable moments!</p>
+
+        <p>
+            <a href="{% url 'view_cart' %}">🛒 View Cart</a>
+        </p>
+    </header>
+
+    <main>
+        <h2>Our Menu</h2>
+
+        <div class="menu">
+            {% for item in menu_items %}
+                <div class="item">
+                    <h3>{{ item.name }}</h3>
+
+                    <p>{{ item.description }}</p>
+
+                    <p class="price">
+                        ₹{{ item.price }}
+                    </p>
+
+                    {% if item.is_available %}
+                        <p class="availability">
+                            Available
+                        </p>
+
+                        <form method="POST"
+                              action="{% url 'add_to_cart' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit">
+                                Add to Cart
+                            </button>
+                        </form>
+                    {% else %}
+                        <p class="unavailable">
+                            Currently unavailable
+                        </p>
+                    {% endif %}
+                </div>
+
+            {% empty %}
+                <div class="empty">
+                    <p>No menu items added yet.</p>
+                    <p>Please add food items through Django Admin.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <p class="place-order">
+            <a href="{% url 'place_order' %}">
+                Place an Order
+            </a>
+        </p>
+    </main>
+
+    <footer>
+        <p>Shiva's Restaurant | Powered by Django</p>
+    </footer>
+
+</body>
+</html>
